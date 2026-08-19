@@ -1,0 +1,9 @@
+[package]
+name = "cmd"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+handlers = {path= "../handlers"}
+tokio.workspace = true
+actix-web.workspace = true
