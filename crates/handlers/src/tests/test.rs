@@ -1,4 +1,5 @@
 #[allow(unused)]
+#[cfg(test)]
 mod tests {
     use crate::health_checker::health_check_handler;
 
