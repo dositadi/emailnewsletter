@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 actix-web.workspace = true
 tokio.workspace = true
+reqwest.workspace = true

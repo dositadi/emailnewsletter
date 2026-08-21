@@ -1,15 +1,14 @@
-use actix_web::{ App, HttpServer, web };
+use actix_web::{ App, HttpServer, dev::Server, web };
 use tokio::io;
 
-use crate::{ greet::greet, health_checker::health_check_handler };
+use crate::{ health_checker::health_check_handler };
 
-pub async fn run() -> Result<(), io::Error> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/", web::get().to(greet))
-            .route("/health_check", web::get().to(health_check_handler))
-            .route("/{name}", web::get().to(greet))
+pub fn run() -> Result<Server, io::Error> {
+    let server = HttpServer::new(|| {
+        App::new().route("/health_check", web::get().to(health_check_handler))
     })
         .bind("127.0.0.1:8000")?
-        .run().await
+        .run();
+
+    Ok(server)
 }
