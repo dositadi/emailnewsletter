@@ -1,4 +1,3 @@
-pub mod greet;
-pub mod health_checker;
+pub mod handlers;
 pub mod run;
 mod tests;

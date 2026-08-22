@@ -2,5 +2,6 @@ use handlers::run::run;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    run()?.await
+    //run()?.await
+    Ok(())
 }

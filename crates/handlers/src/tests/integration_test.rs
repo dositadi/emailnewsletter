@@ -1,32 +1,39 @@
 #[allow(unused)]
-#[cfg(test)]
-mod integration_tests {
-    use std::io;
+pub mod integration_tests {
+    use std::{io, net::TcpListener};
 
-    use crate::{ health_checker::health_check_handler, run::run };
+    use crate::{handlers::health_check_handler, run::run};
 
     #[tokio::test]
     async fn health_check_succeeds() {
-        spawn_app();
+        let address = spawn_app();
 
         let client = reqwest::Client::new();
-        const URL: &str = "http://127.0.0.1:8000/health_check";
 
-        match client.get(URL).send().await {
+        match client.get(format!("{}/health_check", address)).send().await {
             Ok(response) => {
                 assert!(response.status().is_success());
                 assert_eq!(Some(0), response.content_length())
             }
-            Err(why) => { println!("Failed to send request {why}") }
+            Err(why) => {
+                println!("Failed to send request {why}")
+            }
         }
     }
 
-    fn spawn_app() {
-        match run() {
+    pub fn spawn_app() -> String {
+        let listener = TcpListener::bind("127.0.0.1:0").expect("failed to bind port");
+
+        let port = listener.local_addr().unwrap().port();
+
+        match run(listener) {
             Ok(server) => {
                 tokio::spawn(server);
+                format!("http://127.0.0.1:{}", port)
             }
-            Err(why) => { println!("Failed to spawn server: {}", why) }
+            Err(why) => {
+                format!("Failed to spawn server: {}", why)
+            }
         }
     }
 }
