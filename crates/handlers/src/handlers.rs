@@ -16,5 +16,4 @@ pub async fn subscribe(_form: web::Form<FormData>) -> HttpResponse {
     } else {
         HttpResponse::Ok().finish()
     }
-    
 }
