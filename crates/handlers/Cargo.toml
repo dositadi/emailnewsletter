@@ -7,3 +7,4 @@ edition = "2024"
 actix-web.workspace = true
 tokio.workspace = true
 reqwest.workspace = true
+serde.workspace = true
